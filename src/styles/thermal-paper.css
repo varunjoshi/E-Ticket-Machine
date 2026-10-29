@@ -60,6 +60,16 @@
   will-change: height;
 }
 
+.machine-printer-overlay .paper-feed {
+  transform: translateY(-100%);
+  transform-origin: bottom center;
+  overflow: visible;
+}
+
+.machine-printer-overlay .thermal-paper {
+  overflow: visible;
+}
+
 .paper-feed--feeding {
   animation: paperFeed 0.5s ease-in-out infinite alternate;
 }
@@ -72,7 +82,7 @@
 .paper-feed::before {
   content: "";
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 10px;
@@ -86,7 +96,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  top: 0;
   height: 5px;
   z-index: 4;
   background:
@@ -161,6 +171,23 @@
 
 .thermal-paper__edge {
   display: none;
+}
+
+.machine-printer-overlay .paper-feed--done .thermal-paper__edge {
+  display: block;
+  position: absolute;
+  top: -9px;
+  left: 3px;
+  right: 3px;
+  height: 13px;
+  z-index: 5;
+  border-radius: 50% 50% 35% 35%;
+  background: linear-gradient(180deg, #fffdf4 0%, #e9e3d3 100%);
+  box-shadow:
+    0 -2px 3px rgba(0, 0, 0, 0.16),
+    inset 0 2px 2px rgba(255, 255, 255, 0.7);
+  transform: perspective(35px) rotateX(28deg);
+  transform-origin: bottom center;
 }
 
 /* printer status chip */
