@@ -27,6 +27,8 @@
   flex-direction: column;
   align-items: center;
   filter: drop-shadow(0 20px 18px rgba(0, 0, 0, 0.45));
+  overflow: hidden;
+  max-height: calc(100vh - 107px);
 }
 
 .machine-printer-overlay .printer-slot {
@@ -61,17 +63,17 @@
 }
 
 .machine-printer-overlay .paper-feed {
-  --feed-z: -100%;
+  --feed-z: 100%;
   --paper-pitch: 0deg;
   transform: translateY(var(--feed-z)) rotateZ(var(--paper-pitch));
   transform-origin: bottom center;
-  overflow: visible;
+  overflow: hidden;
   perspective: 520px;
   transition: transform 0.9s cubic-bezier(0.18, 0.72, 0.24, 1);
 }
 
 .machine-printer-overlay .thermal-paper {
-  overflow: visible;
+  overflow: hidden;
   transform-origin: bottom center;
   transform-style: flat;
 }
