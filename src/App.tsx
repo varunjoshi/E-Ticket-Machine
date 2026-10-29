@@ -242,6 +242,18 @@ function Shell() {
         )}
       </main>
 
+      {machineFullscreen ? (
+        <button
+          type="button"
+          className="machine-fullscreen-exit"
+          onClick={toggleMachineFullscreen}
+          aria-label="Exit machine-only fullscreen"
+          title="Exit fullscreen"
+        >
+          <Minimize2 size={16} />
+        </button>
+      ) : null}
+
       <footer className="app-footer">
         <span>BALAJI ETM — experimental MSRTC-style ticketing demo. Not affiliated with MSRTC.</span>
         <span className="app-footer__meta">
