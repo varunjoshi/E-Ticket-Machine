@@ -95,7 +95,7 @@ export function ThermalPrinter({
           style={{ height: `${height}px` }}
           aria-hidden="true"
         >
-          <div className="thermal-paper" style={{ minHeight: `${fullHeight}px` }}>
+          <div className="thermal-paper">
             <div className="thermal-paper__texture" />
             <div className="thermal-paper__content">
               {lines.map((line, i) => (
