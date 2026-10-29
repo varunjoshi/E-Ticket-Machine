@@ -61,11 +61,11 @@
 }
 
 .machine-printer-overlay .paper-feed {
-  --feed-z: -100%;
+  --feed-z: 100%;
   --paper-pitch: 0deg;
   transform: translateY(var(--feed-z)) rotateZ(var(--paper-pitch));
   transform-origin: bottom center;
-  overflow: visible;
+  overflow: hidden;
   perspective: 520px;
   transition: transform 0.9s cubic-bezier(0.18, 0.72, 0.24, 1);
 }
