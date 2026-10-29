@@ -730,6 +730,28 @@ a {
   padding-top: 4px;
 }
 
+.machine-stage__controls {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 560px);
+  margin-bottom: 12px;
+}
+
+.machine-stage__mode-label {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.machine-stage__fullscreen {
+  gap: 6px;
+}
+
 .machine-stage__glow {
   position: absolute;
   top: 6%;
@@ -775,6 +797,53 @@ a {
   flex-direction: column;
   gap: 14px;
   padding-top: 4px;
+}
+
+.app--machine-fullscreen {
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(79, 212, 226, 0.1), transparent 55%),
+    #080b0a;
+  overflow: auto;
+}
+
+.app--machine-fullscreen .app-bar,
+.app--machine-fullscreen .app-footer,
+.app--machine-fullscreen .device-aside,
+.app--machine-fullscreen .machine-caption {
+  display: none;
+}
+
+.app--machine-fullscreen .app-main {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: none;
+  min-height: 100dvh;
+  padding: max(18px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+}
+
+.app--machine-fullscreen .device-layout,
+.app--machine-fullscreen .machine-stage {
+  width: 100%;
+  max-width: none;
+}
+
+.app--machine-fullscreen .machine-stage {
+  padding: 0;
+}
+
+.app--machine-fullscreen .machine-stage__controls {
+  width: min(100%, 380px);
+}
+
+.app--machine-fullscreen .machine-stage__mode-label {
+  color: var(--cyan-2);
+}
+
+.app--machine-fullscreen .machine {
+  max-height: none;
 }
 
 .aside-card {

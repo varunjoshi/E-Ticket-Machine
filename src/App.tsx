@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import {
-  Bot, Calculator, MonitorPlay, Settings, ShieldAlert, Speaker, VolumeX, Wifi, WifiOff, X,
+  Bot, Calculator, Maximize2, Minimize2, MonitorPlay, Settings, ShieldAlert, Speaker, VolumeX, Wifi, WifiOff, X,
 } from 'lucide-react'
 import { AppProvider, useApp } from './state/AppContext'
 import { TicketMachine } from './components/machine/TicketMachine'
@@ -20,7 +20,9 @@ type Mode = 'device' | 'operator'
 
 function Shell() {
   const app = useApp()
+  const appRef = useRef<HTMLDivElement>(null)
   const [mode, setMode] = useState<Mode>('device')
+  const [machineFullscreen, setMachineFullscreen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [printTicket, setPrintTicket] = useState<Ticket | null>(null)
   const [online, setOnline] = useState(typeof navigator === 'undefined' ? true : navigator.onLine)
@@ -36,21 +38,46 @@ function Shell() {
     }
   }, [])
 
+  useEffect(() => {
+    const onFullscreenChange = () => setMachineFullscreen(document.fullscreenElement === appRef.current)
+    document.addEventListener('fullscreenchange', onFullscreenChange)
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange)
+  }, [])
+
   const handleBrowserPrint = (ticket: Ticket) => {
     flushSync(() => setPrintTicket(ticket))
     window.setTimeout(() => window.print(), 60)
   }
 
   const switchMode = (next: Mode) => {
+    if (next === 'operator' && document.fullscreenElement) {
+      void document.exitFullscreen()
+    }
     setMode(next)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const toggleMachineFullscreen = async () => {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen()
+      return
+    }
+    if (!appRef.current?.requestFullscreen) {
+      app.notify('error', 'Fullscreen is not supported by this browser.')
+      return
+    }
+    try {
+      await appRef.current.requestFullscreen()
+    } catch {
+      app.notify('error', 'Fullscreen could not be started. Please try again.')
+    }
   }
 
   const lastTicket = app.tickets[0]
   const quote = app.quote
 
   return (
-    <div className="app">
+    <div ref={appRef} className={`app ${machineFullscreen ? 'app--machine-fullscreen' : ''}`}>
       <header className="app-bar">
         <div className="app-bar__brand">
           <span className="app-bar__logo" aria-hidden="true">
@@ -106,6 +133,21 @@ function Shell() {
           <div className="device-layout">
             <section className="machine-stage" aria-label="BALAJI electronic ticket machine">
               <div className="machine-stage__glow" aria-hidden="true" />
+              <div className="machine-stage__controls">
+                <span className="machine-stage__mode-label">
+                  {machineFullscreen ? 'Machine only' : 'Passenger machine'}
+                </span>
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--small machine-stage__fullscreen"
+                  onClick={toggleMachineFullscreen}
+                  aria-pressed={machineFullscreen}
+                  aria-label={machineFullscreen ? 'Exit machine-only fullscreen' : 'Enter machine-only fullscreen'}
+                >
+                  {machineFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+                  <span>{machineFullscreen ? 'Exit fullscreen' : 'Use fullscreen'}</span>
+                </button>
+              </div>
               <TicketMachine onSwitchMode={switchMode} onBrowserPrint={handleBrowserPrint} />
               <div className="machine-caption">
                 <span className="machine-caption__dot" />
