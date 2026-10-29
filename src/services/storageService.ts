@@ -10,6 +10,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   paperWidth: 58,
   skipBoot: false,
   showMarathiStops: true,
+  clockOverride: null,
 }
 
 export function defaultData(): PersistedData {

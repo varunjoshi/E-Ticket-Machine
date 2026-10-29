@@ -1657,6 +1657,39 @@
   margin-top: 1px;
 }
 
+.toggle-row--stacked {
+  grid-column: 1 / -1;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.toggle-row--stacked > span {
+  flex: 1 1 260px;
+}
+
+.toggle-row strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.clock-setting {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 1 auto;
+}
+
+.clock-setting .input {
+  width: 205px;
+}
+
+.clock-setting__status {
+  flex-basis: 100%;
+  color: var(--muted-2);
+  font-size: 0.63rem;
+}
+
 .toggle-row input[type="checkbox"] {
   width: 17px;
   height: 17px;

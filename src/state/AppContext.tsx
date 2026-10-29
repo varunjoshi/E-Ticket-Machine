@@ -168,11 +168,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const updateDraft = useCallback((patch: Partial<Draft>) => {
     setDraft((prev) => {
       const next = { ...prev, ...patch }
+      const adults = Math.max(0, Math.min(20, Math.floor(next.adults) || 0))
+      const children = Math.max(0, Math.min(20 - adults, Math.floor(next.children) || 0))
       return {
         ...next,
-        adults: Math.max(0, Math.min(20, Math.floor(next.adults) || 0)),
-        children: Math.max(0, Math.min(20, Math.floor(next.children) || 0)),
-        concessions: normalizeConcessions(next.concessions, next.adults),
+        adults,
+        children,
+        concessions: normalizeConcessions(next.concessions, adults),
       }
     })
   }, [])
@@ -239,6 +241,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
       issuingRef.current = true
       try {
+        const configuredClock = current.settings.clockOverride ? new Date(current.settings.clockOverride) : null
+        const issuedAt = configuredClock && !Number.isNaN(configuredClock.getTime())
+          ? configuredClock.toISOString()
+          : new Date().toISOString()
         const ticket = createTicket({
           serialNumber: current.nextSerial,
           operator: current.operator,
@@ -252,6 +258,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           fromStopId: from.id,
           toStopId: to.id,
           childFactor: current.tariff.childFactor,
+          issuedAt,
         })
         commit({
           ...current,

@@ -163,6 +163,7 @@ export interface AppSettings {
   paperWidth: 58 | 80
   skipBoot: boolean
   showMarathiStops: boolean
+  clockOverride: string | null
 }
 
 export interface PersistedData {

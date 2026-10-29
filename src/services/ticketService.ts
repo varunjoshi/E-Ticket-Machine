@@ -52,6 +52,7 @@ export interface IssueArgs {
   fromStopId: string
   toStopId: string
   childFactor: number
+  issuedAt?: string
 }
 
 /**
@@ -59,7 +60,7 @@ export interface IssueArgs {
  * caller so it can be persisted together with the ticket in one commit.
  */
 export function createTicket(args: IssueArgs): Ticket {
-  const now = new Date().toISOString()
+  const now = args.issuedAt ?? new Date().toISOString()
   const { quote } = args
   if (!quote.ok || !quote.routeId || !quote.serviceName) {
     throw new Error('Cannot issue a ticket without a valid calculated fare.')

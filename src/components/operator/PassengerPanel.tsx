@@ -14,10 +14,10 @@ export function PassengerPanel({ cashText, onCashTextChange, cashPaise, cashErro
   const { draft, tariff, quote, updateDraft, setConcession } = useApp()
 
   const setAdults = (next: number) => {
-    updateDraft({ adults: Math.max(0, Math.min(9, next)) })
+    updateDraft({ adults: Math.max(0, Math.min(20 - draft.children, next)) })
   }
 
-  const setChildren = (next: number) => updateDraft({ children: Math.max(0, Math.min(9, next)) })
+  const setChildren = (next: number) => updateDraft({ children: Math.max(0, Math.min(20 - draft.adults, next)) })
 
   const change = cashPaise - quote.totalPaise
   const concessionUsed = Object.values(draft.concessions).reduce((sum, c) => sum + c, 0)
@@ -33,7 +33,7 @@ export function PassengerPanel({ cashText, onCashTextChange, cashPaise, cashErro
               <Minus size={14} />
             </button>
             <output aria-live="polite">{draft.adults}</output>
-            <button type="button" onClick={() => setAdults(draft.adults + 1)} disabled={draft.adults >= 9} aria-label="Add adult">
+            <button type="button" onClick={() => setAdults(draft.adults + 1)} disabled={draft.adults + draft.children >= 20} aria-label="Add adult">
               <Plus size={14} />
             </button>
           </div>
@@ -46,7 +46,7 @@ export function PassengerPanel({ cashText, onCashTextChange, cashPaise, cashErro
               <Minus size={14} />
             </button>
             <output aria-live="polite">{draft.children}</output>
-            <button type="button" onClick={() => setChildren(draft.children + 1)} disabled={draft.children >= 9} aria-label="Add child">
+            <button type="button" onClick={() => setChildren(draft.children + 1)} disabled={draft.adults + draft.children >= 20} aria-label="Add child">
               <Plus size={14} />
             </button>
           </div>

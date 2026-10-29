@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { AlertTriangle, Database, Download, RotateCcw, Save, SlidersHorizontal, Upload, WifiOff, X } from 'lucide-react'
+import { AlertTriangle, Clock3, Database, Download, RotateCcw, Save, SlidersHorizontal, Upload, WifiOff, X } from 'lucide-react'
 import { useApp } from '../../state/AppContext'
 import { DEMO_TARIFF } from '../../data/demoTariffs'
 import { downloadSampleImport } from '../../services/storageService'
@@ -21,6 +21,10 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
   const [importError, setImportError] = useState<string | null>(null)
   const [tariffError, setTariffError] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+
+  const clockValue = app.settings.clockOverride
+    ? toLocalDateTimeValue(app.settings.clockOverride)
+    : ''
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -156,6 +160,24 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
                     <button type="button" className={app.settings.paperWidth === 58 ? 'is-active' : ''} onClick={() => app.updateSettings({ paperWidth: 58 })}>58 mm</button>
                     <button type="button" className={app.settings.paperWidth === 80 ? 'is-active' : ''} onClick={() => app.updateSettings({ paperWidth: 80 })}>80 mm</button>
                   </div>
+                </div>
+                <div className="toggle-row toggle-row--stacked">
+                  <span><strong><Clock3 size={14} /> Ticket date & time</strong><em>Uses your device time by default. Set an operator time for demo tickets when needed.</em></span>
+                  <div className="clock-setting">
+                    <input
+                      type="datetime-local"
+                      className="input"
+                      value={clockValue}
+                      onChange={(e) => app.updateSettings({ clockOverride: e.target.value ? new Date(e.target.value).toISOString() : null })}
+                      aria-label="Ticket date and time"
+                    />
+                    <button type="button" className="btn btn--ghost btn--small" onClick={() => app.updateSettings({ clockOverride: null })} disabled={!app.settings.clockOverride}>
+                      Use live time
+                    </button>
+                  </div>
+                  <small className="clock-setting__status">
+                    {app.settings.clockOverride ? `Configured: ${new Date(app.settings.clockOverride).toLocaleString()}` : 'Live device time is active'}
+                  </small>
                 </div>
               </div>
               <p className="aside-note">
@@ -355,4 +377,11 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
       </div>
     </div>
   )
+}
+
+function toLocalDateTimeValue(iso: string): string {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return ''
+  const offset = date.getTimezoneOffset()
+  return new Date(date.getTime() - offset * 60_000).toISOString().slice(0, 16)
 }
