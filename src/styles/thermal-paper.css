@@ -183,6 +183,50 @@
 .thermal-paper__content {
   position: relative;
   z-index: 1;
+  transform-style: preserve-3d;
+}
+
+.thermal-paper__segment {
+  position: relative;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  animation: segmentReverseCurl 1.15s cubic-bezier(0.25, 0.72, 0.3, 1) infinite alternate;
+  animation-delay: calc(var(--segment-index) * -0.07s);
+}
+
+.thermal-paper__segment::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 70%, rgba(86, 74, 47, 0.12));
+  opacity: calc(0.12 + (var(--segment-index) / var(--segment-total)) * 0.28);
+}
+
+.machine-printer-overlay .paper-feed--done .thermal-paper__segment {
+  animation: segmentSettle 0.9s cubic-bezier(0.16, 0.8, 0.24, 1) forwards;
+  animation-delay: calc(var(--segment-index) * 0.035s);
+}
+
+@keyframes segmentReverseCurl {
+  from {
+    transform: translate3d(-1px, 0, 0) rotateX(7deg) rotateY(-7deg) rotateZ(-1.5deg);
+  }
+  to {
+    transform: translate3d(1px, -2px, 0) rotateX(calc(24deg - (var(--segment-index) * 1deg))) rotateY(8deg) rotateZ(2deg);
+  }
+}
+
+@keyframes segmentSettle {
+  0% {
+    transform: translate3d(1px, -2px, 0) rotateX(24deg) rotateY(8deg) rotateZ(2deg);
+  }
+  55% {
+    transform: translate3d(-1px, 2px, 0) rotateX(calc(-8deg + (var(--segment-index) * 0.5deg))) rotateY(-3deg) rotateZ(-1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0);
+  }
 }
 
 .paper-line {

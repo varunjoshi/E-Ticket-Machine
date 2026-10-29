@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Check, Download, Printer, Scissors, SkipForward, X } from 'lucide-react'
 import type { Ticket } from '../../types'
 import { formatTicketLines } from '../../services/ticketService'
@@ -33,6 +33,12 @@ export function ThermalPrinter({
   const lineHeight = variant === 'machine' ? 12.35 : 14.6
   const padding = variant === 'machine' ? 18 : 22
   const fullHeight = Math.round(lines.length * lineHeight + padding)
+  const segmentSize = 4
+  const paperSegments = useMemo(() => {
+    const segments: string[][] = []
+    for (let i = 0; i < lines.length; i += segmentSize) segments.push(lines.slice(i, i + segmentSize))
+    return segments
+  }, [lines])
 
   const [revealed, setRevealed] = useState(0)
   const [done, setDone] = useState(false)
@@ -96,11 +102,25 @@ export function ThermalPrinter({
           <div className="thermal-paper" style={{ minHeight: `${fullHeight}px` }}>
             <div className="thermal-paper__texture" />
             <div className="thermal-paper__content">
-              {lines.map((line, i) => (
-                <div key={i} className={`paper-line ${i < revealed ? 'paper-line--shown' : ''} ${i === revealed - 1 && !done ? 'paper-line--active' : ''}`}>
-                  {line || '\u00a0'}
-                </div>
-              ))}
+              {paperSegments.map((segment, segmentIndex) => {
+                const firstLine = segmentIndex * segmentSize
+                return (
+                  <div
+                    key={firstLine}
+                    className="thermal-paper__segment"
+                    style={{ '--segment-index': segmentIndex, '--segment-total': paperSegments.length } as CSSProperties}
+                  >
+                    {segment.map((line, lineIndex) => {
+                      const lineNumber = firstLine + lineIndex
+                      return (
+                        <div key={lineNumber} className={`paper-line ${lineNumber < revealed ? 'paper-line--shown' : ''} ${lineNumber === revealed - 1 && !done ? 'paper-line--active' : ''}`}>
+                          {line || '\u00a0'}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              })}
             </div>
             <div className="thermal-paper__edge" />
           </div>
