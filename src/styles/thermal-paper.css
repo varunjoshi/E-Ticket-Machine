@@ -55,7 +55,7 @@
 .paper-feed {
   position: relative;
   width: var(--paper-w, 214px);
-  overflow: hidden;
+  overflow: visible;
   border-radius: 1px 1px 0 0;
   will-change: height;
 }

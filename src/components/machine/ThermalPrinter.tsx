@@ -81,7 +81,7 @@ export function ThermalPrinter({
 
   const height = done 
     ? fullHeight 
-    : Math.max(0, Math.round(revealed * lineHeight))
+    : Math.max(0, Math.round(revealed * lineHeight + padding * 0.3))
 
   const body = (
     <>
