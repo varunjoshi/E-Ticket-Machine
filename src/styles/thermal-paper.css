@@ -19,7 +19,7 @@
 
 .machine-printer-overlay .printer-stage {
   position: absolute;
-  top: 107px;
+  top: 242px;
   left: 50%;
   transform: translateX(-50%);
   width: calc(var(--paper-w) + 10px);
