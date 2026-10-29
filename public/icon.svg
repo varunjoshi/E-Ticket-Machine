@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="BALAJI ETM">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#202622"/>
+      <stop offset="1" stop-color="#0a0d0c"/>
+    </linearGradient>
+    <linearGradient id="key" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe277"/>
+      <stop offset="1" stop-color="#e5b009"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
+  <rect x="120" y="70" width="272" height="372" rx="46" fill="#151a17" stroke="#3b4540" stroke-width="5"/>
+  <rect x="146" y="96" width="220" height="88" rx="16" fill="#2b322e" stroke="#465149" stroke-width="3"/>
+  <rect x="208" y="108" width="96" height="7" rx="3.5" fill="#050706"/>
+  <rect x="158" y="198" width="196" height="84" rx="10" fill="#6bd8e6" stroke="#0c4c55" stroke-width="4"/>
+  <rect x="170" y="210" width="124" height="8" rx="2" fill="#0a3a42"/>
+  <rect x="170" y="228" width="164" height="7" rx="2" fill="#0a3a42" opacity=".75"/>
+  <rect x="170" y="245" width="96" height="7" rx="2" fill="#0a3a42" opacity=".55"/>
+  <g fill="url(#key)">
+    <rect x="158" y="302" width="42" height="30" rx="6"/>
+    <rect x="210" y="302" width="42" height="30" rx="6"/>
+    <rect x="262" y="302" width="42" height="30" rx="6"/>
+    <rect x="158" y="342" width="42" height="30" rx="6"/>
+    <rect x="210" y="342" width="42" height="30" rx="6"/>
+    <rect x="262" y="342" width="42" height="30" rx="6"/>
+  </g>
+  <rect x="314" y="302" width="28" height="70" rx="6" fill="#50cede"/>
+  <rect x="158" y="382" width="94" height="26" rx="5" fill="#50cede"/>
+  <rect x="262" y="382" width="80" height="26" rx="5" fill="#dc4d42"/>
+  <text x="256" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" letter-spacing="4" fill="#f4c933">BALAJI</text>
+</svg>

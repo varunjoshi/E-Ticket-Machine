@@ -1,0 +1,446 @@
+/* ============================================================
+   Thermal receipt simulation (58 mm / 80 mm)
+   ============================================================ */
+
+.machine-printer-overlay {
+  --paper-line: 12.35px;
+  --paper-font: 9.1px;
+  --paper-w: 214px;
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.machine-printer-overlay.paper-80 {
+  --paper-w: 246px;
+}
+
+.machine-printer-overlay .printer-stage {
+  position: absolute;
+  top: 107px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--paper-w) + 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 20px 18px rgba(0, 0, 0, 0.45));
+}
+
+.machine-printer-overlay .printer-slot {
+  display: none;
+}
+
+.machine-printer-overlay .printer-status {
+  position: absolute;
+  left: 50%;
+  bottom: 86px;
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.machine-printer-overlay .printer-actions {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: 92%;
+  pointer-events: auto;
+}
+
+.paper-feed {
+  position: relative;
+  width: var(--paper-w, 214px);
+  overflow: hidden;
+  border-radius: 1px 1px 0 0;
+  will-change: height;
+}
+
+.paper-feed--feeding {
+  animation: paperFeed 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes paperFeed {
+  from { filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0)); }
+  to { filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18)); }
+}
+
+.paper-feed::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent);
+}
+
+.paper-feed::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  z-index: 4;
+  background:
+    linear-gradient(135deg, transparent 0 40%, #f8f4e8 40%) 0 0 / 6px 6px repeat-x,
+    linear-gradient(45deg, transparent 0 40%, #f8f4e8 40%) 3px 0 / 6px 6px repeat-x;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.18));
+}
+
+.thermal-paper {
+  position: relative;
+  width: 100%;
+  padding: 8px 10px 10px;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, #fffdf4 0%, #fcf9ee 55%, #f5f1e3 100%);
+  color: #27261f;
+  font-family: var(--font-thermal);
+  font-size: var(--paper-font, 9.1px);
+  font-weight: 600;
+  line-height: var(--paper-line, 12.35px);
+  letter-spacing: -0.01em;
+  white-space: pre;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 14px rgba(120, 108, 73, 0.08),
+    0 1px 0 rgba(0, 0, 0, 0.2);
+  opacity: 0.99;
+  background-blend-mode: multiply;
+  clip-path: polygon(0 0, 100% 0, 99.6% 100%, 0.3% 99.6%);
+}
+
+.thermal-paper__texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(rgba(90, 80, 50, 0.14) 0.4px, transparent 0.7px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.018) 0 1px, transparent 1px 3px);
+  background-size: 3px 3px, auto;
+  mix-blend-mode: multiply;
+}
+
+.thermal-paper__content {
+  position: relative;
+  z-index: 1;
+}
+
+.paper-line {
+  height: var(--paper-line, 12.35px);
+  line-height: var(--paper-line, 12.35px);
+  opacity: 0;
+  transform: translateY(1px);
+  transition: opacity 0.08s linear;
+  white-space: pre;
+  overflow: hidden;
+}
+
+.paper-line--shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.paper-line--active {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.09) 40%, transparent);
+  animation: printLine 0.15s linear;
+}
+
+@keyframes printLine {
+  from { filter: blur(0.6px); opacity: 0.4; }
+  to { filter: blur(0); opacity: 1; }
+}
+
+.thermal-paper__edge {
+  display: none;
+}
+
+/* printer status chip */
+.printer-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: rgba(8, 12, 10, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.printer-status__done,
+.printer-status__busy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.printer-status__done {
+  color: #9df1b8;
+}
+
+.printer-status__busy {
+  color: #ffe084;
+}
+
+.printer-status__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffe084;
+  animation: ledPulse 0.6s infinite;
+}
+
+.printer-status__badge {
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.16em;
+  color: #7d8b83;
+}
+
+/* actions */
+.printer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 8px;
+  background: rgba(9, 13, 11, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+}
+
+.printer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 9px;
+  border: 1px solid #34423a;
+  border-radius: 5px;
+  background: #161d1a;
+  color: #dce6df;
+  font-family: var(--font-ui);
+  font-size: 0.64rem;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.printer-btn:hover {
+  background: #202a25;
+  border-color: #4b5e52;
+}
+
+.printer-btn--primary {
+  background: linear-gradient(180deg, #ffe276, #efbe12);
+  border-color: #a98200;
+  color: #1a1b07;
+}
+
+.printer-btn--primary:hover {
+  background: linear-gradient(180deg, #ffec9f, #f6c81c);
+}
+
+/* ------------------------------ modal variant ---------------------------- */
+.printer-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(10px, 4vh, 40px) 14px;
+  background: rgba(3, 6, 5, 0.82);
+  backdrop-filter: blur(8px);
+  overflow-y: auto;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.printer-modal {
+  --paper-line: 14.6px;
+  --paper-font: 10.4px;
+  --paper-w: min(300px, 82vw);
+  width: min(460px, 96vw);
+  padding: clamp(14px, 2.4vw, 22px);
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(79, 212, 226, 0.08), transparent 55%),
+    linear-gradient(160deg, #18201c, #101512);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
+  animation: modalRise 0.22s ease-out;
+}
+
+.printer-modal.paper-80 {
+  --paper-w: min(360px, 86vw);
+}
+
+.printer-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.printer-modal__head h2 {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--cyan-2);
+  margin-top: 2px;
+  letter-spacing: 0.03em;
+}
+
+.printer-stage--modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0 4px;
+  filter: drop-shadow(0 24px 28px rgba(0, 0, 0, 0.55));
+}
+
+.printer-slot {
+  position: relative;
+  width: 70%;
+  height: 25px;
+  margin-bottom: -2px;
+  border-radius: 5px 5px 2px 2px;
+  background:
+    linear-gradient(180deg, #2b332e, #161b18 55%, #0b0e0c);
+  border: 1px solid #3b463f;
+  box-shadow:
+    inset 0 4px 7px rgba(0, 0, 0, 0.85),
+    0 2px 0 rgba(255, 255, 255, 0.05);
+  z-index: 5;
+}
+
+.printer-slot__label {
+  position: absolute;
+  top: -11px;
+  left: 8px;
+  font-family: var(--font-mono);
+  font-size: 5.8px;
+  letter-spacing: 0.13em;
+  color: #69786f;
+}
+
+.printer-slot__mouth {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 6px;
+  height: 5px;
+  border-radius: 2px;
+  background: #020303;
+  box-shadow: inset 0 2px 3px #000, 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.printer-modal .printer-status {
+  margin-top: 12px;
+  align-self: center;
+}
+
+.printer-modal .printer-status__done,
+.printer-modal .printer-status__busy {
+  font-size: 8px;
+}
+
+.printer-modal .printer-actions {
+  margin-top: 12px;
+  padding: 7px;
+  gap: 6px;
+}
+
+.printer-modal .printer-btn {
+  font-size: 0.7rem;
+  padding: 7px 10px;
+}
+
+@keyframes modalRise {
+  from { opacity: 0; transform: translateY(12px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --------------------------- static ticket paper ------------------------- */
+.ticket-preview__paper {
+  width: min(100%, 300px);
+  margin: 0 auto;
+  padding: 14px 14px 18px;
+  background:
+    radial-gradient(rgba(90, 80, 50, 0.1) 0.4px, transparent 0.7px) 0 0 / 3px 3px,
+    linear-gradient(180deg, #fffdf5, #f7f3e6);
+  color: #25241e;
+  font-family: var(--font-thermal);
+  font-size: 10.2px;
+  font-weight: 600;
+  line-height: 14.4px;
+  white-space: pre;
+  border-radius: 2px;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.4),
+    inset 0 0 18px rgba(120, 108, 73, 0.08);
+  clip-path: polygon(0 0, 100% 0, 99.4% 98%, 99.6% 100%, 0.4% 99.6%, 0 97%);
+}
+
+.ticket-preview__line {
+  height: 14.4px;
+  overflow: hidden;
+}
+
+.ticket-preview__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+@media (max-width: 420px) {
+  .machine-printer-overlay {
+    --paper-w: 200px;
+    --paper-font: 8.6px;
+  }
+
+  .machine-printer-overlay .printer-stage {
+    top: 96px;
+  }
+
+  .machine-printer-overlay .printer-status {
+    bottom: 78px;
+  }
+
+  .machine-printer-overlay .printer-actions {
+    bottom: 20px;
+    width: 94%;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .printer-btn {
+    font-size: 0.58rem;
+    padding: 5px 7px;
+  }
+}
+
+@media (max-width: 380px) {
+  .machine-printer-overlay {
+    --paper-w: 168px;
+    --paper-font: 7.5px;
+  }
+}
