@@ -27,6 +27,8 @@
   flex-direction: column;
   align-items: center;
   filter: drop-shadow(0 20px 18px rgba(0, 0, 0, 0.45));
+  overflow: hidden;
+  max-height: calc(100vh - 107px);
 }
 
 .machine-printer-overlay .printer-slot {
@@ -71,7 +73,7 @@
 }
 
 .machine-printer-overlay .thermal-paper {
-  overflow: visible;
+  overflow: hidden;
   transform-origin: bottom center;
   transform-style: flat;
 }
