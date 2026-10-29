@@ -26,8 +26,70 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  filter: drop-shadow(0 20px 18px rgba(0, 0, 0, 0.45));
   z-index: 40;
+}
+
+.machine-printer-overlay .paper-feed {
+  position: relative;
+  margin-top: -2px;
+  width: var(--paper-w);
+  transform-origin: top center;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.55));
+  will-change: transform;
+}
+
+.paper__window {
+  height: 0;
+  overflow: hidden;
+  will-change: height;
+  transition: height 0.06s linear;
+}
+
+.machine-printer-overlay .thermal-paper {
+  position: relative;
+}
+
+/* Printing animation - subtle shake */
+.paper-feed--feeding {
+  animation: paperVibrate 0.08s ease-in-out infinite alternate;
+}
+
+@keyframes paperVibrate {
+  from { 
+    transform: translateX(-0.3px) rotate(-0.05deg);
+  }
+  to { 
+    transform: translateX(0.3px) rotate(0.05deg);
+  }
+}
+
+/* Done - slight sway and settle */
+.paper-feed--done {
+  animation: paperSettle 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes paperSettle {
+  0% { 
+    transform: rotate(-0.05deg);
+  }
+  15% {
+    transform: rotate(1.1deg);
+  }
+  30% {
+    transform: rotate(-0.8deg);
+  }
+  45% {
+    transform: rotate(0.5deg);
+  }
+  60% {
+    transform: rotate(-0.3deg);
+  }
+  75% {
+    transform: rotate(0.15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .machine-printer-overlay .printer-slot {
@@ -51,47 +113,6 @@
   z-index: 3;
   width: 92%;
   pointer-events: auto;
-}
-
-.paper-feed {
-  position: relative;
-  width: var(--paper-w, 214px);
-  overflow: visible;
-  border-radius: 0 0 2px 2px;
-  will-change: height;
-  transition: height 0.1s linear;
-}
-
-.machine-printer-overlay .paper-feed {
-  overflow: visible;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.machine-printer-overlay .thermal-paper {
-  position: relative;
-  overflow: visible;
-  transform-origin: top center;
-}
-
-.paper-feed--feeding .thermal-paper {
-  animation: paperShake 0.08s ease-in-out infinite alternate;
-}
-
-@keyframes paperShake {
-  from { 
-    transform: translateX(-0.3px) translateY(0);
-  }
-  to { 
-    transform: translateX(0.3px) translateY(-0.2px);
-  }
-}
-
-.paper-feed::before {
-  display: none;
-}
-
-.paper-feed::after {
-  display: none;
 }
 
 .thermal-paper {

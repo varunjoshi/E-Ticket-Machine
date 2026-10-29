@@ -90,19 +90,20 @@ export function ThermalPrinter({
         </div>
         <div
           className={`paper-feed ${done ? 'paper-feed--done' : 'paper-feed--feeding'}`}
-          style={{ height: `${height}px` }}
           aria-hidden="true"
         >
-          <div className="thermal-paper">
-            <div className="thermal-paper__texture" />
-            <div className="thermal-paper__content">
-              {lines.map((line, i) => (
-                <div key={i} className={`paper-line ${i < revealed ? 'paper-line--shown' : ''} ${i === revealed - 1 && !done ? 'paper-line--active' : ''}`}>
-                  {line || '\u00a0'}
-                </div>
-              ))}
+          <div className="paper__window" style={{ height: `${height}px` }}>
+            <div className="thermal-paper">
+              <div className="thermal-paper__texture" />
+              <div className="thermal-paper__content">
+                {lines.map((line, i) => (
+                  <div key={i} className={`paper-line ${i < revealed ? 'paper-line--shown' : ''} ${i === revealed - 1 && !done ? 'paper-line--active' : ''}`}>
+                    {line || '\u00a0'}
+                  </div>
+                ))}
+              </div>
+              <div className="thermal-paper__edge" />
             </div>
-            <div className="thermal-paper__edge" />
           </div>
         </div>
         <div className="printer-tear" aria-hidden="true" />
