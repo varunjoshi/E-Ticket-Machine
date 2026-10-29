@@ -100,6 +100,91 @@
   to { filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18)); }
 }
 
+.paper-feed::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent);
+}
+
+.paper-feed::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  z-index: 4;
+  background:
+    linear-gradient(135deg, transparent 0 40%, #f8f4e8 40%) 0 0 / 6px 6px repeat-x,
+    linear-gradient(45deg, transparent 0 40%, #f8f4e8 40%) 3px 0 / 6px 6px repeat-x;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.18));
+}
+
+.thermal-paper {
+  position: relative;
+  width: 100%;
+  padding: 8px 10px 10px;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, #fffdf4 0%, #fcf9ee 55%, #f5f1e3 100%);
+  color: #27261f;
+  font-family: var(--font-thermal);
+  font-size: var(--paper-font, 9.1px);
+  font-weight: 600;
+  line-height: var(--paper-line, 12.35px);
+  letter-spacing: -0.01em;
+  white-space: pre;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 14px rgba(120, 108, 73, 0.08),
+    0 1px 0 rgba(0, 0, 0, 0.2);
+  opacity: 0.99;
+  background-blend-mode: multiply;
+  clip-path: polygon(0 0, 100% 0, 99.6% 100%, 0.3% 99.6%);
+}
+
+.thermal-paper__texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(rgba(90, 80, 50, 0.14) 0.4px, transparent 0.7px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.018) 0 1px, transparent 1px 3px);
+  background-size: 3px 3px, auto;
+  mix-blend-mode: multiply;
+}
+
+.thermal-paper__content {
+  position: relative;
+  z-index: 1;
+}
+
+.paper-line {
+  height: var(--paper-line, 12.35px);
+  line-height: var(--paper-line, 12.35px);
+  opacity: 0;
+  transform: translateY(1px);
+  transition: opacity 0.08s linear;
+  white-space: pre;
+  overflow: hidden;
+}
+
+.paper-line--shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.paper-line--active {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.09) 40%, transparent);
+  animation: printLine 0.15s linear;
+}
+
 @keyframes printLine {
   from { filter: blur(0.6px); opacity: 0.4; }
   to { filter: blur(0); opacity: 1; }
