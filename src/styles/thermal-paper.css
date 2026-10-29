@@ -63,12 +63,12 @@
 .machine-printer-overlay .paper-feed {
   transform: translateY(-100%);
   transform-origin: bottom center;
-  overflow: visible;
+  overflow: hidden;
   perspective: 260px;
 }
 
 .machine-printer-overlay .thermal-paper {
-  overflow: visible;
+  overflow: hidden;
   transform-origin: bottom center;
   animation: paperRiseSway 1.1s cubic-bezier(0.22, 0.72, 0.3, 1) infinite alternate;
 }
@@ -194,18 +194,18 @@
 .machine-printer-overlay .thermal-paper__edge {
   display: block;
   position: absolute;
-  top: -9px;
-  left: 3px;
-  right: 3px;
-  height: 13px;
+  top: 0;
+  left: 2px;
+  right: 2px;
+  height: 10px;
   z-index: 5;
-  border-radius: 50% 50% 35% 35%;
+  border-radius: 4px 4px 50% 50%;
   background: linear-gradient(180deg, #fffdf4 0%, #e9e3d3 100%);
   box-shadow:
-    0 -2px 3px rgba(0, 0, 0, 0.16),
+    0 2px 3px rgba(0, 0, 0, 0.16),
     inset 0 2px 2px rgba(255, 255, 255, 0.7);
   transform: perspective(35px) rotateX(12deg);
-  transform-origin: bottom center;
+  transform-origin: top center;
   animation: paperCurl 1.1s cubic-bezier(0.25, 0.75, 0.3, 1) infinite alternate;
 }
 
@@ -216,18 +216,18 @@
 @keyframes paperCurl {
   from {
     transform: perspective(35px) rotateX(8deg) rotateZ(-0.8deg) translateY(1px);
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.12), inset 0 2px 2px rgba(255, 255, 255, 0.62);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 2px 2px rgba(255, 255, 255, 0.62);
   }
   to {
-    transform: perspective(35px) rotateX(34deg) rotateZ(0.8deg) translateY(-2px);
-    box-shadow: 0 -5px 8px rgba(0, 0, 0, 0.2), inset 0 3px 3px rgba(255, 255, 255, 0.78);
+    transform: perspective(35px) rotateX(34deg) rotateZ(0.8deg) translateY(2px);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2), inset 0 3px 3px rgba(255, 255, 255, 0.78);
   }
 }
 
 @keyframes paperCurlSettle {
-  0% { transform: perspective(35px) rotateX(34deg) rotateZ(0.8deg) translateY(-2px); }
-  60% { transform: perspective(35px) rotateX(23deg) rotateZ(-0.5deg) translateY(-1px); }
-  100% { transform: perspective(35px) rotateX(27deg) rotateZ(0) translateY(-1px); }
+  0% { transform: perspective(35px) rotateX(34deg) rotateZ(0.8deg) translateY(2px); }
+  60% { transform: perspective(35px) rotateX(23deg) rotateZ(-0.5deg) translateY(1px); }
+  100% { transform: perspective(35px) rotateX(27deg) rotateZ(0) translateY(1px); }
 }
 
 /* printer status chip */
