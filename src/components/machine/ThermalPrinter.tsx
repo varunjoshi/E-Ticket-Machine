@@ -79,9 +79,7 @@ export function ThermalPrinter({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticket.id])
 
-  const height = done 
-    ? fullHeight 
-    : Math.max(0, Math.round(revealed * lineHeight + padding * 0.3))
+  const height = Math.max(0, Math.round(revealed * lineHeight + 20))
 
   const body = (
     <>
