@@ -31,8 +31,6 @@ export function ThermalPrinter({
 }: ThermalPrinterProps) {
   const lines = useMemo(() => formatTicketLines(ticket), [ticket])
   const lineHeight = variant === 'machine' ? 12.35 : 14.6
-  const padding = variant === 'machine' ? 18 : 22
-  const fullHeight = Math.round(lines.length * lineHeight + padding)
 
   const [revealed, setRevealed] = useState(0)
   const [done, setDone] = useState(false)
@@ -79,9 +77,7 @@ export function ThermalPrinter({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticket.id])
 
-  const height = done 
-    ? fullHeight 
-    : Math.max(0, Math.round(revealed * lineHeight))
+  const height = Math.max(0, Math.round(revealed * lineHeight + 20))
 
   const body = (
     <>
@@ -92,19 +88,20 @@ export function ThermalPrinter({
         </div>
         <div
           className={`paper-feed ${done ? 'paper-feed--done' : 'paper-feed--feeding'}`}
-          style={{ height: `${height}px` }}
           aria-hidden="true"
         >
-          <div className="thermal-paper" style={{ minHeight: `${fullHeight}px` }}>
-            <div className="thermal-paper__texture" />
-            <div className="thermal-paper__content">
-              {lines.map((line, i) => (
-                <div key={i} className={`paper-line ${i < revealed ? 'paper-line--shown' : ''} ${i === revealed - 1 && !done ? 'paper-line--active' : ''}`}>
-                  {line || '\u00a0'}
-                </div>
-              ))}
+          <div className="paper__window" style={{ height: `${height}px` }}>
+            <div className="thermal-paper">
+              <div className="thermal-paper__texture" />
+              <div className="thermal-paper__content">
+                {lines.map((line, i) => (
+                  <div key={i} className={`paper-line ${i < revealed ? 'paper-line--shown' : ''} ${i === revealed - 1 && !done ? 'paper-line--active' : ''}`}>
+                    {line || '\u00a0'}
+                  </div>
+                ))}
+              </div>
+              <div className="thermal-paper__edge" />
             </div>
-            <div className="thermal-paper__edge" />
           </div>
         </div>
         <div className="printer-tear" aria-hidden="true" />
