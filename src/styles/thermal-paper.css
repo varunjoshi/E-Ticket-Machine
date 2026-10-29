@@ -61,10 +61,11 @@
 }
 
 .machine-printer-overlay .paper-feed {
-  transform: translateY(-100%);
+  transform: translateY(-100%) rotateZ(0deg);
   transform-origin: bottom center;
   overflow: hidden;
   perspective: 260px;
+  transition: transform 0.9s cubic-bezier(0.18, 0.72, 0.24, 1);
 }
 
 .machine-printer-overlay .thermal-paper {
@@ -79,6 +80,15 @@
 
 .machine-printer-overlay .paper-feed--done .thermal-paper {
   animation: paperRiseSettle 0.7s cubic-bezier(0.16, 0.8, 0.24, 1) forwards;
+}
+
+.machine-printer-overlay .paper-feed--done {
+  transform: translateY(0) rotateZ(0deg);
+  overflow: visible;
+}
+
+.machine-printer-overlay .paper-feed--done .thermal-paper {
+  overflow: visible;
 }
 
 @keyframes paperFeed {
@@ -210,7 +220,10 @@
 }
 
 .machine-printer-overlay .paper-feed--done .thermal-paper__edge {
-  animation: paperCurlSettle 0.75s cubic-bezier(0.16, 0.8, 0.24, 1) forwards;
+  top: auto;
+  bottom: -9px;
+  transform-origin: top center;
+  animation: paperHangingCurl 0.8s cubic-bezier(0.16, 0.8, 0.24, 1) forwards;
 }
 
 @keyframes paperCurl {
@@ -224,10 +237,10 @@
   }
 }
 
-@keyframes paperCurlSettle {
-  0% { transform: perspective(35px) rotateX(34deg) rotateZ(0.8deg) translateY(2px); }
-  60% { transform: perspective(35px) rotateX(23deg) rotateZ(-0.5deg) translateY(1px); }
-  100% { transform: perspective(35px) rotateX(27deg) rotateZ(0) translateY(1px); }
+@keyframes paperHangingCurl {
+  0% { transform: perspective(35px) rotateX(-4deg) rotateZ(0.8deg) translateY(-1px); }
+  55% { transform: perspective(35px) rotateX(-28deg) rotateZ(-0.5deg) translateY(2px); }
+  100% { transform: perspective(35px) rotateX(-20deg) rotateZ(0) translateY(1px); }
 }
 
 /* printer status chip */
