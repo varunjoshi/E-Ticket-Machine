@@ -31,8 +31,6 @@ export function ThermalPrinter({
 }: ThermalPrinterProps) {
   const lines = useMemo(() => formatTicketLines(ticket), [ticket])
   const lineHeight = variant === 'machine' ? 12.35 : 14.6
-  const padding = variant === 'machine' ? 18 : 22
-  const fullHeight = Math.round(lines.length * lineHeight + padding)
 
   const [revealed, setRevealed] = useState(0)
   const [done, setDone] = useState(false)
